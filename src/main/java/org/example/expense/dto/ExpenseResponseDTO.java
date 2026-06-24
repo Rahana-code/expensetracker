@@ -2,6 +2,8 @@ package org.example.expense.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,4 +14,5 @@ public class ExpenseResponseDTO {
     private String title;
     private Double amount;
     private String category;
+    private LocalDate expenseDate;
 }

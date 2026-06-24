@@ -1,13 +1,9 @@
 package org.example.expense.controller;
 
-
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.example.expense.dto.*;
 import org.example.expense.service.ExpenseService;
-
-import jakarta.validation.Valid;
-
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +17,8 @@ public class ExpenseController {
     private final ExpenseService service;
 
     @PostMapping
-    public ResponseEntity<ExpenseResponseDTO>
-    createExpense(
-            @Valid
-            @RequestBody ExpenseRequestDTO dto) {
+    public ResponseEntity<ExpenseResponseDTO> createExpense(
+            @Valid @RequestBody ExpenseRequestDTO dto) {
 
         return new ResponseEntity<>(
                 service.createExpense(dto),
@@ -32,40 +26,39 @@ public class ExpenseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExpenseResponseDTO>
-    getExpenseById(@PathVariable Long id) {
+    public ResponseEntity<ExpenseResponseDTO> getExpenseById(@PathVariable Long id) {
 
-        return ResponseEntity.ok(
-                service.getExpenseById(id));
+        return ResponseEntity.ok(service.getExpenseById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<ExpenseResponseDTO>>
-    getAllExpenses() {
+    public ResponseEntity<List<ExpenseResponseDTO>> getAllExpenses() {
 
-        return ResponseEntity.ok(
-                service.getAllExpenses());
+        return ResponseEntity.ok(service.getAllExpenses());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ExpenseResponseDTO>
-    updateExpense(
+    public ResponseEntity<ExpenseResponseDTO> updateExpense(
             @PathVariable Long id,
-            @Valid
-            @RequestBody ExpenseRequestDTO dto) {
+            @Valid @RequestBody ExpenseRequestDTO dto) {
 
-        return ResponseEntity.ok(
-                service.updateExpense(id, dto));
+        return ResponseEntity.ok(service.updateExpense(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String>
-    deleteExpense(@PathVariable Long id) {
+    public ResponseEntity<String> deleteExpense(@PathVariable Long id) {
 
         service.deleteExpense(id);
+        return ResponseEntity.ok("Expense deleted successfully");
+    }
+
+    // ✅ OFFSET PAGINATION ENDPOINT
+    @GetMapping("/offset")
+    public ResponseEntity<List<ExpenseResponseDTO>> getPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
 
         return ResponseEntity.ok(
-                "Expense deleted successfully");
+                service.getExpensesWithOffset(page, size));
     }
 }
-

@@ -1,20 +1,23 @@
 package org.example.expense.dto;
 
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class ExpenseRequestDTO {
 
-    @NotBlank(message = "Title cannot be empty")
+    @NotBlank
     private String title;
 
-    @Positive(message = "Amount must be greater than zero")
+    @NotNull
+    @Positive
     private Double amount;
 
-    @NotBlank(message = "Category cannot be empty")
+    @NotBlank
     private String category;
-}
 
+    @NotNull
+    private LocalDate expenseDate;
+}
