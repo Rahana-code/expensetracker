@@ -24,6 +24,10 @@ public class ExpenseController {
                 service.createExpense(dto),
                 HttpStatus.CREATED);
     }
+@GetMapping("/health")
+public String getHealth(){
+        return "Healthy";
+}
 
     @GetMapping("/{id}")
     public ResponseEntity<ExpenseResponseDTO> getExpenseById(@PathVariable Long id) {
