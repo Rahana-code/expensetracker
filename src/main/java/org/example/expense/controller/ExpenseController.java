@@ -24,10 +24,11 @@ public class ExpenseController {
                 service.createExpense(dto),
                 HttpStatus.CREATED);
     }
-@GetMapping("/health")
-public String getHealth(){
+
+    @GetMapping("/health")
+    public String getHealth() {
         return "Healthy";
-}
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ExpenseResponseDTO> getExpenseById(@PathVariable Long id) {
@@ -66,4 +67,21 @@ public String getHealth(){
                 service.getExpensesWithOffset(page, size));
     }
 
+    @GetMapping("/total/{year}/{month}")
+    public ResponseEntity<Double> getTotalExpensesByMonth(
+            @PathVariable int year,
+            @PathVariable int month) {
+
+        return ResponseEntity.ok(
+                service.getTotalExpensesByMonth(year, month));
+    }
+
+    @GetMapping("/highest/{year}/{month}")
+    public ResponseEntity<ExpenseResponseDTO> getHighestExpenseByMonth(
+            @PathVariable int year,
+            @PathVariable int month) {
+
+        return ResponseEntity.ok(
+                service.getHighestExpenseByMonth(year, month));
+    }
 }

@@ -8,6 +8,7 @@ import org.example.expense.repository.ExpenseRepository;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -82,7 +83,30 @@ public class ExpenseService {
                 .map(this::mapToDTO)
                 .toList();
     }
+    public Double getTotalExpensesByMonth(int year, int month) {
 
+        return repository.findAll()
+                .stream()
+                .filter(expense ->
+                        expense.getExpenseDate().getYear() == year &&
+                                expense.getExpenseDate().getMonthValue() == month)
+                .mapToDouble(Expense::getAmount)
+                .sum();
+    }
+    public ExpenseResponseDTO getHighestExpenseByMonth(int year, int month) {
+
+        Expense expense = repository.findAll()
+                .stream()
+                .filter(e ->
+                        e.getExpenseDate().getYear() == year &&
+                                e.getExpenseDate().getMonthValue() == month)
+                .max(Comparator.comparing(Expense::getAmount))
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "No expenses found for " + month + "/" + year));
+
+        return mapToDTO(expense);
+    }
     private ExpenseResponseDTO mapToDTO(Expense expense) {
 
         return ExpenseResponseDTO.builder()

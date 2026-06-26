@@ -18,25 +18,19 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
 
         if (userRepository.findByUsername("user").isEmpty()) {
-
-            AppUser user = AppUser.builder()
+            userRepository.save(AppUser.builder()
                     .username("user")
                     .password(passwordEncoder.encode("1234"))
                     .role("USER")
-                    .build();
-
-            userRepository.save(user);
+                    .build());
         }
 
         if (userRepository.findByUsername("admin").isEmpty()) {
-
-            AppUser admin = AppUser.builder()
+            userRepository.save(AppUser.builder()
                     .username("admin")
                     .password(passwordEncoder.encode("admin123"))
                     .role("ADMIN")
-                    .build();
-
-            userRepository.save(admin);
+                    .build());
         }
     }
 }

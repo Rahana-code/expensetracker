@@ -2,9 +2,7 @@ package org.example.expense.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.expense.dto.AuthRequestDTO;
-import org.example.expense.dto.AuthRequestDTO;
-import org.example.expense.security.JWTUtil;
-import org.example.expense.security.JWTUtil;
+import org.example.expense.security.JWTService;
 import org.example.expense.service.CustomUserDetailsService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,11 +16,11 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userDetailsService;
-    private final JWTUtil jwtUtil;
+    private final JWTService jwtService;
 
     @PostMapping("/login")
     public String login(@RequestBody AuthRequestDTO request) {
-
+        System.out.println("LOGIN API HIT");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -33,6 +31,6 @@ public class AuthController {
         UserDetails userDetails =
                 userDetailsService.loadUserByUsername(request.getUsername());
 
-        return jwtUtil.generateToken(userDetails.getUsername());
+        return jwtService.generateToken(userDetails.getUsername());
     }
 }
