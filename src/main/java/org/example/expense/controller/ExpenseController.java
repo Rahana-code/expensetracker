@@ -56,7 +56,7 @@ public String getHealth(){
         return ResponseEntity.ok("Expense deleted successfully");
     }
 
-    // ✅ OFFSET PAGINATION ENDPOINT
+    //  OFFSET PAGINATION ENDPOINT
     @GetMapping("/offset")
     public ResponseEntity<List<ExpenseResponseDTO>> getPaginated(
             @RequestParam(defaultValue = "0") int page,
@@ -65,4 +65,5 @@ public String getHealth(){
         return ResponseEntity.ok(
                 service.getExpensesWithOffset(page, size));
     }
+
 }
